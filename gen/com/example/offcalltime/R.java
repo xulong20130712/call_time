@@ -34,9 +34,22 @@ public final class R {
         public static final int main=0x7f070000;
     }
     public static final class string {
-        public static final int action_settings=0x7f050001;
-        public static final int app_name=0x7f050000;
-        public static final int startReceiver=0x7f050002;
+        public static final int MISS_CALL=0x7f050006;
+        public static final int MISS_CALL_str=0x7f050009;
+        public static final int OUT_CALL=0x7f050007;
+        public static final int OUT_CALL_str=0x7f05000a;
+        public static final int USEFULL_CALL=0x7f050005;
+        public static final int USEFULL_CALL_str=0x7f050008;
+        public static final int action_settings=0x7f050002;
+        public static final int app_name=0x7f050001;
+        public static final int call_num=0x7f05000b;
+        public static final int date=0x7f05000d;
+        public static final int name=0x7f05000c;
+        public static final int new_callMSG=0x7f050000;
+        public static final int realTime=0x7f05000f;
+        public static final int startReceiver=0x7f050003;
+        public static final int title=0x7f050004;
+        public static final int waitTime=0x7f05000e;
     }
     public static final class style {
         /** 

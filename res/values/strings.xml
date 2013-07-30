@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="new_callMSG">您有电话信息</string>
+    
     <string name="app_name">offCallTime</string>
     <string name="action_settings">Settings</string>
     <string name="startReceiver">开始接受广播</string>
+    
+    <string name="title">您有一通：</string>
+    
+    <string name="USEFULL_CALL">实际通话时间</string>
+    <string name="MISS_CALL">未接来电:</string>
+    <string name="OUT_CALL">呼出电话:</string>
+    
+    <string name="USEFULL_CALL_str">实际通话时间</string>
+    <string name="MISS_CALL_str">未接来电响铃时间</string>
+    <string name="OUT_CALL_str">呼出等待时间</string>
+    
+    <string name="call_num">号码：</string>
+    <string name="name">联系人:</string>
+    <string name="date">日期:</string>
+    <string name="waitTime">等待时间：</string>
+    <string name="realTime">实际通话时间：</string>
 
 </resources>

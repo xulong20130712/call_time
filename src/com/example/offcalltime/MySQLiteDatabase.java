@@ -1,11 +1,13 @@
 package com.example.offcalltime;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.ContactsContract;
 
 
 public class MySQLiteDatabase extends SQLiteOpenHelper {
@@ -20,7 +22,7 @@ public class MySQLiteDatabase extends SQLiteOpenHelper {
 		super(context, name, factory, version);
 		db= this.getWritableDatabase();
 	}
-
+	
 	/**
 	 * 
 	 * 创建记录所有电话记录的表
@@ -92,9 +94,87 @@ public class MySQLiteDatabase extends SQLiteOpenHelper {
 		
 		Cursor cursor= null;
 		
-		db.query(DB_NAME, new String[]{"num", "name", "date", "wait_time", "usefull_time", "miss_call_time", "flag"}, "", "", "", "", "");
+		if(isNotNull(num)&& !isNotNull(date)) {
+			
+			cursor= db.query(DB_NAME, new String[]{"num", "name", "date", "wait_time", "usefull_time", "miss_call_time", "flag"}, "num= ?", new String[]{num}, null, null, "id desc");
+		}
+		else if(isNotNull(name)&& !isNotNull(num)&& !isNotNull(date)) {
+			
+			cursor= db.query(DB_NAME, new String[]{"num", "name", "date", "wait_time", "usefull_time", "miss_call_time", "flag"}, "name= ?", new String[]{name}, null, null, "id desc");
+		}
+		else if(isNotNull(date)&& !isNotNull(num)) {
+	
+			cursor= db.query(DB_NAME, new String[]{"num", "name", "date", "wait_time", "usefull_time", "miss_call_time", "flag"}, "date= ?", new String[]{date}, null, null, "id desc");
+		}
+		if(isNotNull(date)&& isNotNull(num)) {
+			
+			cursor= db.query(DB_NAME, new String[]{"num", "name", "date", "wait_time", "usefull_time", "miss_call_time", "flag"}, "num= ? and date= ?", new String[]{num}, null, null, "id desc");
+		}
+		
 		return cursor;
 	}
 	
+	/**
+	 * 删除部分信息
+	 * @param num
+	 * @param date
+	 * @return
+	 */
+	public boolean deleteData(final String num, final String date) {
+		
+		boolean flag= false;
+		int deleteFlag= 0;
+		if(isNotNull(num)&& !isNotNull(date)) {
+			
+			deleteFlag= db.delete(DB_NAME, "num=?", new String[]{num});
+		}else{
+			
+			if(!isNotNull(num)&& isNotNull(date)) {
+				
+				deleteFlag= db.delete(DB_NAME, "date=?", new String[]{date});
+			}
+		}
+		if(isNotNull(date)&& isNotNull(num)) {
+			
+			deleteFlag= db.delete(DB_NAME, "num= ? and date= ?", new String[]{num, date});
+		}
+		if(deleteFlag!= 0) {
+			
+			flag= true;
+		}
+		
+		return flag;
+	}
 	
+	private boolean isNotNull(final String content) {
+		
+		if(content!= null&& (!"".equals(content))) {
+			
+			return true;
+		}
+		return false;
+	}
+	
+
+	/**
+	 * 通过电话号码获取联系人姓名
+	 * @param context
+	 * @param phoneNum
+	 * @return
+	 */
+	public static String getContactNameFromPhoneBook(Context context, String phoneNum) {
+		String contactName = "";
+		ContentResolver cr = context.getContentResolver();
+		Cursor pCur = cr.query(
+				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+				ContactsContract.CommonDataKinds.Phone.NUMBER + " = ?",
+				new String[] { phoneNum }, null);
+		if (pCur.moveToFirst()) {
+			contactName = pCur
+					.getString(pCur
+							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+			pCur.close();
+		}
+		return contactName;
+	}
 }
